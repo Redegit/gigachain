@@ -6,7 +6,8 @@ from .client import (
     TagmeIntegrationClientSync,
 )
 from .decorator import tagme_trace, tagme_trace_async
-from .entities import Metadata, DialogData, ChatMessage, FunctionDef
+from .entities import ChatMessage, DialogData, FunctionDef, Metadata
+from .tracer import TagMeAgentTracer
 
 __all__ = [
     "TagmeIntegrationClient",
@@ -18,4 +19,5 @@ __all__ = [
     "DialogData",
     "ChatMessage",
     "FunctionDef",
+    "TagMeAgentTracer",
 ]

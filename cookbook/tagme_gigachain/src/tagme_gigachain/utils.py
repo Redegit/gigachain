@@ -14,13 +14,7 @@ from langchain_core.messages import (
 )
 from langchain_core.prompt_values import PromptValue
 
-from .entities import (
-    ChatMessage,
-    DialogData,
-    FunctionCall,
-    FunctionResult,
-    RoleType,
-)
+from .entities import ChatMessage, DialogData, FunctionCall, FunctionResult, RoleType
 
 Metadata = Dict[str, Union[str, int, float, dict, list, None]]
 

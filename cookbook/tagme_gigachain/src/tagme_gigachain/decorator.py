@@ -8,7 +8,12 @@ from langchain_core.language_models import LanguageModelInput
 from langchain_core.messages import BaseMessage
 
 from .client import TagmeIntegrationClientAsync, TagmeIntegrationClientSync
-from .entities import DialogData, DialogTransformFunction, Metadata, MissingFunctionsError
+from .entities import (
+    DialogData,
+    DialogTransformFunction,
+    Metadata,
+    MissingFunctionsError,
+)
 from .utils import form_dialog_data
 
 logger = logging.getLogger(__name__)
@@ -51,7 +56,10 @@ def tagme_trace_async(
                 await tagme_client.send_dialog(data)
                 logger.debug("Dialog successfully submitted to TagMe for annotation")
             except MissingFunctionsError as e:
-                logger.error("Descriptions for some functions are missing: %s", ", ".join(e.missing))
+                logger.error(
+                    "Descriptions for some functions are missing: %s",
+                    ", ".join(e.missing),
+                )
                 raise
 
             return model_response
@@ -98,7 +106,10 @@ def tagme_trace(
                 tagme_client.send_dialog(data)
                 logger.debug("Dialog successfully submitted to TagMe for annotation")
             except MissingFunctionsError as e:
-                logger.error("Descriptions for some functions are missing: %s", ", ".join(e.missing))
+                logger.error(
+                    "Descriptions for some functions are missing: %s",
+                    ", ".join(e.missing),
+                )
                 raise
 
             return model_response

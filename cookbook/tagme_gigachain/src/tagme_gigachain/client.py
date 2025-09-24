@@ -23,26 +23,27 @@ class TagmeIntegrationClient:
     def __init__(
         self,
         token: Optional[str] = None,
+        base_url: Optional[str] = None,
+        ignore_missing_functions: bool = True,
         trust_env: bool = False,
         ssl: bool = True,
-        ignore_missing_functions: bool = True,
-        base_url: Optional[str] = None,
     ) -> None:
         """Initialize TagMe client settings and validate credentials.
 
         Args:
             token (Optional[str]): Explicit API token if not loaded from the environment.
+            base_url (Optional[str]): Override for the TagMe service root URL.
+            ignore_missing_functions (bool): Skip raising when TagMe lacks referenced function definitions.
             trust_env (bool): Whether to inherit proxy and auth settings from the host environment.
             ssl (bool): Controls SSL certificate verification behaviour for outgoing requests.
-            ignore_missing_functions (bool): Skip raising when TagMe lacks referenced function definitions.
-            base_url (Optional[str]): Override for the TagMe service root URL.
         """
 
         self.token = token or os.environ.get("TAGME_TOKEN")
         self.validate_token()
 
         raw_url = base_url or os.environ.get(
-            "TAGME_BASE_URL", "https://tagme.sberdevices.ru/dev/chatwm/plugin_statistics/trace"
+            "TAGME_BASE_URL",
+            "https://tagme.sberdevices.ru/dev/chatwm/plugin_statistics/trace",
         )
         parsed = urlparse(raw_url)
         if not parsed.scheme or not parsed.netloc:
@@ -89,7 +90,7 @@ class TagmeIntegrationClientAsync(TagmeIntegrationClient):
             base_url (Optional[str]): Override for the TagMe service root URL.
         """
 
-        super().__init__(token, trust_env, ssl, ignore_missing_functions, base_url)
+        super().__init__(token, base_url, ignore_missing_functions, trust_env, ssl)
         self._session: Optional[aiohttp.ClientSession] = None
 
     def get_session(self) -> aiohttp.ClientSession:
@@ -137,7 +138,11 @@ class TagmeIntegrationClientAsync(TagmeIntegrationClient):
                 resp_json = await resp.json()
                 if resp_json.get("code") == "FUNCTIONS_NOT_FOUND":
                     raise MissingFunctionsError(resp_json.get("missing", [])) from err
-                logger.error("Error during TagMe request: %s \nServer response: %s", err, resp_json)
+                logger.error(
+                    "Error during TagMe request: %s \nServer response: %s",
+                    err,
+                    resp_json,
+                )
                 raise
 
     async def health_check(self):
@@ -223,7 +228,7 @@ class TagmeIntegrationClientSync(TagmeIntegrationClient):
             base_url (Optional[str]): Override for the TagMe service root URL.
         """
 
-        super().__init__(token, trust_env, ssl, ignore_missing_functions, base_url)
+        super().__init__(token, base_url, ignore_missing_functions, trust_env, ssl)
         self._session: Optional[requests.Session] = None
 
     def get_session(self) -> requests.Session:
@@ -262,7 +267,14 @@ class TagmeIntegrationClientSync(TagmeIntegrationClient):
 
         resp: Optional[requests.Response] = None
         try:
-            resp = session.request(method, url=target_url, data=data, headers=req_headers, verify=self.ssl, **kwargs)
+            resp = session.request(
+                method,
+                url=target_url,
+                data=data,
+                headers=req_headers,
+                verify=self.ssl,
+                **kwargs,
+            )
             resp.raise_for_status()
             return resp.json()
         except requests.RequestException as err:

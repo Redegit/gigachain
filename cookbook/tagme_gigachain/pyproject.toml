@@ -4,14 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tagme_gigachain"
-version = "0.1.5"
+version = "0.2.2"
 description = "TagMe Gigachain Integration client"
 authors = [{name = "dmpresnukhin@sberbank.ru"}]
 readme = "README.md"
 requires-python = ">=3.9"
 
+[tool.setuptools]
+package-dir = {"" = "src"}
+
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src"]
 
 [tool.black]
 line-length = 120
@@ -22,13 +25,13 @@ exclude = "^$"  # handled by tooling/CI include lists
 [tool.isort]
 profile = "black"
 line_length = 120
-src_paths = ["tagme_gigachain", "tests"]
-known_first_party = ["tagme_gigachain"]
+src_paths = ["src", "tests"]
+known_first_party = ["src"]
 combine_as_imports = true
 
 [tool.mypy]
 python_version = "3.9"
-mypy_path = ["tagme_gigachain"]
+mypy_path = ["src"]
 show_error_codes = true
 pretty = true
 warn_unused_ignores = true
