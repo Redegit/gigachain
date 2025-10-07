@@ -3,9 +3,9 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tagme_gigachain"
+name = "tagme_ai_traces"
 version = "0.2.2"
-description = "TagMe Gigachain Integration client"
+description = "TagMe AI Traces module"
 authors = [{name = "dmpresnukhin@sberbank.ru"}]
 readme = "README.md"
 requires-python = ">=3.9"

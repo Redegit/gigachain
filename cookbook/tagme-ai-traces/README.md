@@ -1,8 +1,8 @@
-# TagMe Trace
+# TagMe AI Traces
 
 ## Описание
 
-**TagMe Trace** — это вспомогательная библиотека для отправки диалогов и описаний функций из приложений на базе LangChain (Gigachain) в сервис TagMe. Пакет предоставляет синхронные и асинхронные HTTP‑клиенты, а также удобные декораторы для автоматического логирования вызовов языковых моделей и передачи их в TagMe для разметки и анализа.
+**TagMe AI Traces** — это вспомогательная библиотека для отправки диалогов и описаний функций из приложений на базе LangChain (Gigachain) в сервис TagMe. Пакет предоставляет синхронные и асинхронные HTTP‑клиенты, а также удобные декораторы для автоматического логирования вызовов языковых моделей и передачи их в TagMe для разметки и анализа.
 
 ## Основные возможности
 
@@ -16,7 +16,7 @@
 
 - Python 3.9+
 - Установленные зависимости из `requirements.txt`
-- Установленный пакет tagme_gigachain: `pip install ./<path_to_repo>/cookbook/tagme_gigachain`
+- Установленный пакет tagme_ai_traces: `pip install ./<path_to_repo>/cookbook/tagme_ai_traces`
 - Действующий токен доступа к TagMe и адрес сервиса.
 
 ## Настройка окружения
@@ -29,7 +29,7 @@
 ## Быстрый старт: синхронный клиент
 
 ```python
-from tagme_gigachain import TagmeIntegrationClientSync, FunctionDef
+from tagme_ai_traces import TagmeIntegrationClientSync, FunctionDef
 
 client = TagmeIntegrationClientSync(ignore_missing_functions=False)
 
@@ -50,7 +50,7 @@ print(response)
 
 ```python
 import asyncio
-from tagme_gigachain import TagmeIntegrationClientAsync
+from tagme_ai_traces import TagmeIntegrationClientAsync
 
 async def main():
     async_client = TagmeIntegrationClientAsync(ignore_missing_functions=True)
@@ -68,7 +68,7 @@ asyncio.run(main())
 
 ```python
 from langchain_core.messages import AIMessage, HumanMessage
-from tagme_gigachain import tagme_trace_async
+from tagme_ai_traces import tagme_trace_async
 
 @tagme_trace_async(metadata={"additional_meta": "example"})
 async def run_model(messages):
@@ -81,7 +81,7 @@ result = await run_model([HumanMessage(content="Привет")])
 
 ```python
 from langchain_core.messages import AIMessage, HumanMessage
-from tagme_gigachain import tagme_trace
+from tagme_ai_traces import tagme_trace
 
 @tagme_trace(metadata={"additional_meta": "example"})
 def run_model_sync(messages):
@@ -95,7 +95,7 @@ run_model_sync([HumanMessage(content="Привет")])
 - `token`, `trust_env`, `ssl`, `ignore_missing_functions`, `base_url` — проксируются в соответствующий клиент.
 - `tagme_client` — уже созданный экземпляр клиента (полезно для повторного использования).
 - `metadata` — пользовательские метаданные.
-- `dialog_transform_fc` — функция, преобразующая входные данные в `DialogData`. По умолчанию используется `form_dialog_data` из `tagme_gigachain.utils`.
+- `dialog_transform_fc` — функция, преобразующая входные данные в `DialogData`. По умолчанию используется `form_dialog_data` из `tagme_ai_traces.utils`.
 
 ## Формирование данных диалога
 
@@ -118,7 +118,7 @@ pytest
 
 ## Примеры
 
-Jupyter Notebook `examples_tagme_gigachain.ipynb`, демонстрирует интеграцию с LangChain и передачу диалогов в TagMe.
+Jupyter Notebook `examples_tagme_ai_traces.ipynb`, демонстрирует интеграцию с LangChain и передачу диалогов в TagMe.
 
 ## Логирование
 
